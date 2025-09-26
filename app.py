@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from pymongo import MongoClient, errors
 import streamlit as st
 import pandas as pd
-import os
 from dotenv import dotenv_values
 
 # -----------------------------
@@ -13,7 +12,8 @@ config = dotenv_values(".env")
 MONGO_URI = config.get("MONGO_URI")
 DB_NAME = config.get("DB_NAME", "classmanager")
 
-#st.sidebar.write("DEBUG MONGO_URI:", MONGO_URI)  # Debug hiển thị trong sidebar
+# Debug hiển thị trong sidebar
+st.sidebar.caption(f"🔌 Using DB: {DB_NAME}")
 
 # -----------------------------
 # Kết nối MongoDB
@@ -191,7 +191,10 @@ elif menu == "Students":
         grade = st.number_input("Grade level", 1, 20, 10)
         if st.form_submit_button("Add"):
             ok, msg = manager.create_student(Student(sid, name, email, int(grade)))
-            st.success(msg) if ok else st.error(msg)
+            if ok:
+                st.success(msg)
+            else:
+                st.error(msg)
     st.dataframe(pd.DataFrame(manager.read_students()))
 
 # Teachers
@@ -204,7 +207,10 @@ elif menu == "Teachers":
         spec = st.text_input("Specialization")
         if st.form_submit_button("Add"):
             ok, msg = manager.create_teacher(Teacher(tid, name, email, spec))
-            st.success(msg) if ok else st.error(msg)
+            if ok:
+                st.success(msg)
+            else:
+                st.error(msg)
     st.dataframe(pd.DataFrame(manager.read_teachers()))
 
 # Courses
@@ -216,7 +222,10 @@ elif menu == "Courses":
         schedule = st.text_input("Schedule")
         if st.form_submit_button("Add"):
             ok, msg = manager.create_course(Course(code, title, schedule))
-            st.success(msg) if ok else st.error(msg)
+            if ok:
+                st.success(msg)
+            else:
+                st.error(msg)
     st.dataframe(pd.DataFrame(manager.read_courses()))
 
 # Assign Teacher
@@ -229,7 +238,10 @@ elif menu == "Assign Teacher":
         cid = st.selectbox("Course", [c["course_code"] for c in courses])
         if st.button("Assign"):
             ok, msg = manager.assign_teacher(tid, cid)
-            st.success(msg) if ok else st.error(msg)
+            if ok:
+                st.success(msg)
+            else:
+                st.error(msg)
     else:
         st.info("Cần có teacher và course trước.")
 
@@ -243,6 +255,9 @@ elif menu == "Enroll Student":
         cid = st.selectbox("Course", [c["course_code"] for c in courses])
         if st.button("Enroll"):
             ok, msg = manager.enroll_student(sid, cid)
-            st.success(msg) if ok else st.error(msg)
+            if ok:
+                st.success(msg)
+            else:
+                st.error(msg)
     else:
         st.info("Cần có student và course trước.")
