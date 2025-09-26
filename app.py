@@ -1,3 +1,9 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+print("DEBUG URI:", os.getenv("MONGO_URI"))
+
 from pymongo import MongoClient, errors
 import streamlit as st
 import os
