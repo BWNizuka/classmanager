@@ -1,3 +1,24 @@
+from pymongo import MongoClient, errors
+import streamlit as st
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+MONGO_URI = os.getenv("MONGO_URI")
+DB_NAME = os.getenv("DB_NAME", "classmanager")
+
+@st.cache_resource
+def get_db():
+    try:
+        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=8000)
+        client.admin.command("ping")  # test kết nối
+        return client[DB_NAME]
+    except Exception as e:
+        st.error(f"❌ MongoDB connection failed: {e}")
+        return None
+
+db = get_db()
+
 # app.py
 from abc import ABC, abstractmethod
 from pymongo import MongoClient, errors
