@@ -13,7 +13,7 @@ config = dotenv_values(".env")
 MONGO_URI = config.get("MONGO_URI")
 DB_NAME = config.get("DB_NAME", "classmanager")
 
-st.sidebar.write("DEBUG MONGO_URI:", MONGO_URI)  # Debug hiển thị trong sidebar
+#st.sidebar.write("DEBUG MONGO_URI:", MONGO_URI)  # Debug hiển thị trong sidebar
 
 # -----------------------------
 # Kết nối MongoDB
