@@ -30,7 +30,7 @@ def get_db():
 
 db = get_db()
 
-if db:
+if db is not None:
     students_col = db["students"]
     teachers_col = db["teachers"]
     courses_col = db["courses"]
@@ -158,7 +158,7 @@ class ClassManager:
             self.students_col.update_one({"student_id": student_id}, {"$push": {"enrollments": course_code}})
         return True, "Student enrolled"
 
-manager = ClassManager(students_col, teachers_col, courses_col) if db else None
+manager = ClassManager(students_col, teachers_col, courses_col) if db is not None else None
 
 # -----------------------------
 # Streamlit UI
@@ -166,7 +166,7 @@ manager = ClassManager(students_col, teachers_col, courses_col) if db else None
 st.set_page_config(page_title="Class Manager", layout="wide")
 st.title("📚 Class Manager — OOP + MongoDB + Streamlit")
 
-if not db:
+if db is None:
     st.warning("❌ Không kết nối được tới MongoDB. Kiểm tra file .env và chuỗi MONGO_URI.")
     st.stop()
 
